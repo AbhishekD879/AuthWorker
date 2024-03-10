@@ -9,6 +9,8 @@
  */
 
 export interface Env {
+	JWT_SECRET_KEY: string;
+	ENVIRONMENT: string;
 	// Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
 	// MY_KV_NAMESPACE: KVNamespace;
 	//
@@ -24,9 +26,17 @@ export interface Env {
 	// Example binding to a Queue. Learn more at https://developers.cloudflare.com/queues/javascript-apis/
 	// MY_QUEUE: Queue;
 }
+import { error, IRequest, json, Router } from 'itty-router';
+import { loginRoute } from './routes/login';
+export const router = Router();
+
+loginRoute();
+
+router.all('/*', (request: IRequest) => error(404, { message: 'Not found', path: request.params, method: request.method }));
+router.all('/auth/*', (request: IRequest) => error(404, { message: 'Not found', path: request.params, method: request.method }));
 
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		return new Response('Hello World!');
+		return router.handle(request, env, ctx).then(json).catch(error);
 	},
 };

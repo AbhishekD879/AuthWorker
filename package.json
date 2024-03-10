@@ -1,15 +1,20 @@
 {
-  "name": "auth",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
-    "start": "wrangler dev"
-  },
-  "devDependencies": {
-    "@cloudflare/workers-types": "^4.20240222.0",
-    "typescript": "^5.0.4",
-    "wrangler": "^3.0.0"
-  }
+	"name": "auth",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"deploy": "wrangler deploy",
+		"dev": "wrangler dev --port 5001",
+		"start": "wrangler dev"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20240222.0",
+		"@types/node": "^20.11.25",
+		"typescript": "^5.0.4",
+		"wrangler": "https://prerelease-registry.devprod.cloudflare.dev/workers-sdk/prs/5201/npm-package-wrangler-5201"
+	},
+	"dependencies": {
+		"@tsndr/cloudflare-worker-jwt": "^2.5.3",
+		"itty-router": "^4.0.27"
+	}
 }
