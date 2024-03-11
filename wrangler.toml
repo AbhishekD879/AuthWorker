@@ -58,3 +58,8 @@ JWT_SECRET_KEY = "development_secret_key"
 # [[migrations]]
 # tag = "v1"
 # new_classes = ["MyDurableObject"]
+
+[[d1_databases]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "dev-d1-users"
+database_id = "756b40c3-af3d-4d85-bb07-0f74f0430efb"
