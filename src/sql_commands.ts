@@ -12,3 +12,5 @@ export const CREATE_USER_TABLE = `CREATE TABLE IF NOT EXISTS users (
 export const CREATE_USER = `INSERT INTO users (email, password, firstname, lastname, phone, profile_pic) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
 
 export const GET_USER = `SELECT * FROM users WHERE email = $1`;
+
+export const DELETE_USER = `DELETE FROM users WHERE email = $1`;

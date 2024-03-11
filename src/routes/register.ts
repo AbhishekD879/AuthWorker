@@ -56,12 +56,14 @@ export const registerRoute = () => {
 					.setPath('/')
 					.setSameSite('Strict')
 					.setSecure(env.ENVIRONMENT === 'development' ? false : true)
+					.setExpiresRelative(0, 0, 1, 0)
 					.build(); // Example cookie string
 				const u_cookie = new CookieBuilder('u_info', JSON.stringify({ email }))
 					.setHttpOnly(true)
 					.setPath('/')
 					.setSameSite('Strict')
 					.setSecure(env.ENVIRONMENT === 'development' ? false : true)
+					.setExpiresRelative(0, 0, 1, 0)
 					.build();
 				console.info(`Sending Cookie:~ ${r_cookie}`);
 				response.headers.append('Set-Cookie', r_cookie);

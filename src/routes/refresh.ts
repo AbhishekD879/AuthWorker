@@ -48,6 +48,7 @@ export const refreshRoute = () => {
 			.setPath('/')
 			.setSameSite('Strict')
 			.setSecure(env.ENVIRONMENT === 'development' ? false : true)
+			.setExpiresRelative(0, 0, 1, 0)
 			.build(); // Example cookie string
 		console.info(`Sending Cookie:~ ${cookie}`);
 		response.headers.append('Set-Cookie', cookie);

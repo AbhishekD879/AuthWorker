@@ -39,6 +39,7 @@ export const loginRoute = () => {
 					.setPath('/')
 					.setSameSite('Strict')
 					.setSecure(env.ENVIRONMENT === 'development' ? false : true)
+					.setExpiresRelative(0, 0, 1, 0)
 					.build();
 
 				const u_cookie = new CookieBuilder('u_info', JSON.stringify({ email }))
@@ -46,6 +47,7 @@ export const loginRoute = () => {
 					.setPath('/')
 					.setSameSite('Strict')
 					.setSecure(env.ENVIRONMENT === 'development' ? false : true)
+					.setExpiresRelative(0, 0, 1, 0)
 					.build();
 
 				// Construct the Set-Cookie header value
