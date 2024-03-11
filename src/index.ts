@@ -30,10 +30,12 @@ export interface Env {
 import { error, IRequest, json, Router } from 'itty-router';
 import { loginRoute } from './routes/login';
 import { registerRoute } from './routes/register';
+import { refreshRoute } from './routes/refresh';
 export const router = Router();
 
 loginRoute();
 registerRoute();
+refreshRoute();
 
 router.all('/*', (request: IRequest) => error(404, { message: 'Not found', path: request.params, method: request.method }));
 router.all('/auth/*', (request: IRequest) => error(404, { message: 'Not found', path: request.params, method: request.method }));

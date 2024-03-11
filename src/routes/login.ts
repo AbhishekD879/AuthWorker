@@ -1,15 +1,13 @@
+// Import necessary modules and types
 import { IRequest, error } from 'itty-router';
 import { Env, router } from './../index';
 import { createAccessToken, createRefreshToken } from './../jwtUtils';
 import { CookieBuilder } from '../CookieBuilder';
 import type { ILoginBody } from './../types';
-import { CREATE_USER_TABLE, GET_USER } from './../sql_commands';
+import { GET_USER } from './../sql_commands';
+
+// Define the loginRoute function
 export const loginRoute = () => {
-	/**
-	 * Handles the login request
-	 * @param {IRequest} request - The request object
-	 * @returns {string | ErrorResponse} - The login status or an error response
-	 */
 	router.post('/auth/login', async (request: IRequest, env: Env) => {
 		try {
 			const { email, password }: ILoginBody = await request.json();
@@ -35,22 +33,30 @@ export const loginRoute = () => {
 				console.log(`Refresh token: ${refreshToken}`);
 				if (!refreshToken) return error(500, { message: 'Internal server error cannot create refresh token' });
 
-				// Return access token and refresh token
-				const response = new Response(JSON.stringify({ email, accessToken }), {
-					status: 200,
-					statusText: 'USER_LOGGED_IN',
-				});
-				response.headers.set('Content-Type', 'application/json');
-				response.headers.set('Accept', 'application/json');
-
-				const cookie = new CookieBuilder('r_token', refreshToken)
+				// Create cookies
+				const r_cookie = new CookieBuilder('r_token', refreshToken)
 					.setHttpOnly(true)
 					.setPath('/')
 					.setSameSite('Strict')
 					.setSecure(env.ENVIRONMENT === 'development' ? false : true)
-					.build(); // Example cookie string
-				console.info(`Sending Cookie:~ ${cookie}`);
-				response.headers.append('Set-Cookie', cookie);
+					.build();
+
+				const u_cookie = new CookieBuilder('u_info', JSON.stringify({ email }))
+					.setHttpOnly(true)
+					.setPath('/')
+					.setSameSite('Strict')
+					.setSecure(env.ENVIRONMENT === 'development' ? false : true)
+					.build();
+
+				// Construct the Set-Cookie header value
+
+				// Create the response
+				const response = new Response(JSON.stringify({ email, accessToken }), {
+					status: 200,
+					statusText: 'USER_LOGGED_IN',
+				});
+				response.headers.append('Set-Cookie', r_cookie);
+				response.headers.append('Set-Cookie', u_cookie);
 				return response;
 			} else {
 				return error(401, { message: 'Invalid credentials' });

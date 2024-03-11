@@ -51,14 +51,21 @@ export const registerRoute = () => {
 				response.headers.set('Content-Type', 'application/json');
 				response.headers.set('Accept', 'application/json');
 
-				const cookie = new CookieBuilder('r_token', refreshToken)
+				const r_cookie = new CookieBuilder('r_token', refreshToken)
 					.setHttpOnly(true)
 					.setPath('/')
 					.setSameSite('Strict')
 					.setSecure(env.ENVIRONMENT === 'development' ? false : true)
 					.build(); // Example cookie string
-				console.info(`Sending Cookie:~ ${cookie}`);
-				response.headers.append('Set-Cookie', cookie);
+				const u_cookie = new CookieBuilder('u_info', JSON.stringify({ email }))
+					.setHttpOnly(true)
+					.setPath('/')
+					.setSameSite('Strict')
+					.setSecure(env.ENVIRONMENT === 'development' ? false : true)
+					.build();
+				console.info(`Sending Cookie:~ ${r_cookie}`);
+				response.headers.append('Set-Cookie', r_cookie);
+				response.headers.append('Set-Cookie', u_cookie);
 				return response;
 			} else {
 				return error(401, { message: 'Invalid credentials' });

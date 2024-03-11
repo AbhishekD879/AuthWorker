@@ -3,7 +3,7 @@ import { router } from './../index';
 import { CookieBuilder } from '../CookieBuilder';
 
 router.get('/auth/logout', (request: IRequest) => {
-    const cookieHeader = request.headers.get('Cookie');
+	const cookieHeader = request.headers.get('Cookie');
 	if (!cookieHeader) {
 		console.log('Cookies Not attached to refresh request');
 		return error(400, { message: 'Cookies Not attached to refresh request' });
@@ -14,11 +14,11 @@ router.get('/auth/logout', (request: IRequest) => {
 		console.warn('Refresh token not found');
 	}
 	const cookie = new CookieBuilder('refreshToken', '').build();
-    return new Response(null, {
-        headers: {
-            'Set-Cookie': cookie,
-        },
-    });
+	return new Response(null, {
+		headers: {
+			'Set-Cookie': cookie,
+		},
+	});
 });
 
 // Function to parse cookie string into key-value pairs
@@ -29,4 +29,3 @@ function parseCookies(cookieString: string): { [key: string]: string } {
 		return cookies;
 	}, {});
 }
-
