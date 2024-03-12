@@ -14,7 +14,11 @@ export const registerRoute = () => {
 			if (!email) return error(400, { message: 'Email is required' });
 			if (!isEmail(email)) return error(400, { message: 'The Provided Email is not a valid email' });
 			if (!password) return error(400, { message: 'Password is required' });
-			if (!isStrongPassword(password)) return error(400, { message: 'Password is not strong enough' });
+			if (!isStrongPassword(password))
+				return error(400, {
+					message:
+						'Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one digit, and one special character',
+				});
 			const DB = env.DB;
 
 			// Create User Table if Not Exist

@@ -16,7 +16,6 @@ export const loginRoute = () => {
 			if (!email) return error(400, { message: 'Email is required' });
 			if (!isEmail(email)) return error(400, { message: 'The Provided Email is not a valid email' });
 			if (!password) return error(400, { message: 'Password is required' });
-			if (!isStrongPassword(password)) return error(400, { message: 'Password is not strong enough' });
 			// Test Auth user
 			if (env.ENVIRONMENT == 'development' && email && password) {
 				// Check If User is Valid
