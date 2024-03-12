@@ -2,6 +2,7 @@ import { IRequest, error } from 'itty-router';
 import { Env, router } from './../index';
 import { createAccessToken, createRefreshToken, verifyRefreshToken } from '../jwtUtils';
 import { CookieBuilder } from '../CookieBuilder';
+import { isEmail } from '../userUtils';
 
 export const refreshRoute = () => {
 	router.get('/auth/refresh', async (request: IRequest, env: Env) => {
@@ -23,6 +24,8 @@ export const refreshRoute = () => {
 			console.log('User not found');
 			return error(400, { message: 'User Cookie not found' });
 		}
+		// Check if the {user.email} is valid email
+		if (!isEmail(JSON.parse(user).email)) return error(400, { messege: 'Invalid email in cookie' });
 
 		const isRefreshValid = await verifyRefreshToken(refreshToken, env.JWT_SECRET_KEY);
 		if (!isRefreshValid) {

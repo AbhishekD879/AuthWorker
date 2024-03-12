@@ -21,9 +21,9 @@ export const deleteUserRoute = () => {
 			const r_cookie = new CookieBuilder('r_token', '').setExpiresRelative(0, 0, 0, 0).build();
 			response.headers.append('Set-Cookie', r_cookie);
 			response.headers.append('Set-Cookie', u_cookie);
-            return response;
-		} catch (error) {
-			console.log(error);
+			return response;
+		} catch (e) {
+			return error(500, { message: 'Internal server error' });
 		}
 	});
 };

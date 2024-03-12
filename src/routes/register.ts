@@ -4,6 +4,7 @@ import type { ILoginBody } from './../types';
 import { CookieBuilder } from '../CookieBuilder';
 import { createAccessToken, createRefreshToken } from '../jwtUtils';
 import { CREATE_USER, CREATE_USER_TABLE, GET_USER } from '../sql_commands';
+import { isEmail, isStrongPassword } from '../userUtils';
 
 export const registerRoute = () => {
 	router.post('/auth/register', async (request: IRequest, env: Env) => {
@@ -11,7 +12,9 @@ export const registerRoute = () => {
 			const { email, password }: ILoginBody = await request.json();
 			console.log(`Email: ${email} \n Password: ${password}`);
 			if (!email) return error(400, { message: 'Email is required' });
+			if (!isEmail(email)) return error(400, { message: 'The Provided Email is not a valid email' });
 			if (!password) return error(400, { message: 'Password is required' });
+			if (!isStrongPassword(password)) return error(400, { message: 'Password is not strong enough' });
 			const DB = env.DB;
 
 			// Create User Table if Not Exist
