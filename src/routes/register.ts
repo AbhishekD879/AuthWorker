@@ -53,7 +53,7 @@ export const registerRoute = () => {
 				// Return access token and refresh token
 				const response = new Response(JSON.stringify({ email, accessToken }), {
 					status: 200,
-					statusText: 'USER_LOGGED_IN',
+					statusText: 'USER_REGISTERED',
 				});
 				response.headers.set('Content-Type', 'application/json');
 				response.headers.set('Accept', 'application/json');
