@@ -27,25 +27,31 @@ export interface Env {
 	// Example binding to a Queue. Learn more at https://developers.cloudflare.com/queues/javascript-apis/
 	// MY_QUEUE: Queue;
 }
-import { error, IRequest, json, Router } from 'itty-router';
+import { createCors, error, IRequest, json, Router } from 'itty-router';
 import { loginRoute } from './routes/login';
 import { registerRoute } from './routes/register';
 import { refreshRoute } from './routes/refresh';
 import { logoutRoute } from './routes/logout';
 import { deleteUserRoute } from './routes/deleteUser';
 export const router = Router();
-
+const { preflight, corsify } = createCors({
+	origins: ['*'],
+	headers: {
+	  'my-funky-header': 'is pretty funky indeed',
+	},
+  })
 loginRoute();
 registerRoute();
 refreshRoute();
 logoutRoute();
 deleteUserRoute();
 
+router.all("*",preflight)
 router.all('/*', (request: IRequest) => error(404, { message: 'Not found', path: request.params, method: request.method }));
 router.all('/auth/*', (request: IRequest) => error(404, { message: 'Not found', path: request.params, method: request.method }));
 
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		return router.handle(request, env, ctx).then(json).catch(error);
+		return router.handle(request, env, ctx).then(json).catch(error).then(corsify);
 	},
 };
