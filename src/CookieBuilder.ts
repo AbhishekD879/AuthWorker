@@ -50,7 +50,7 @@ export class CookieBuilder {
 	build(): string {
 		const secureAttribute = this.secure ? 'Secure' : '';
 		const httpOnlyAttribute = this.httpOnly ? 'HttpOnly' : '';
-		let cookie = `${this.name}=${this.value}; Path=${this.path}; ${secureAttribute}; ${httpOnlyAttribute}; SameSite=${this.sameSite}`;
+		let cookie = `${this.name}=${this.value}; Path=${this.path} ${secureAttribute}; ${httpOnlyAttribute}; SameSite=${this.sameSite}`;
 		if (this.expires) {
 			const expiresUTC = this.expires.toUTCString();
 			cookie += `; Expires=${expiresUTC}`;

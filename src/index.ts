@@ -37,16 +37,17 @@ export const router = Router();
 const { preflight, corsify } = createCors({
 	origins: ['*'],
 	headers: {
-	  'my-funky-header': 'is pretty funky indeed',
+		'my-funky-header': 'is pretty funky indeed',
+		'Access-Control-Allow-Credentials': 'true',
 	},
-  })
+});
 loginRoute();
 registerRoute();
 refreshRoute();
 logoutRoute();
 deleteUserRoute();
 
-router.all("*",preflight)
+router.all('*', preflight);
 router.all('/*', (request: IRequest) => error(404, { message: 'Not found', path: request.params, method: request.method }));
 router.all('/auth/*', (request: IRequest) => error(404, { message: 'Not found', path: request.params, method: request.method }));
 

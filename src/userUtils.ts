@@ -10,3 +10,16 @@ export function isStrongPassword(password: string): boolean {
 	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{}|;':"\\,.<>/?]).{8,}$/;
 	return passwordRegex.test(password);
 }
+
+
+export function getHeaders(response:Response) {
+
+	let headers;
+	if (response.headers.has('set-cookie')) {
+		const cookieArray = response.headers.get('set-cookie')?.split(', ') || [];
+		headers = Object.assign(Object.fromEntries(response.headers), {'set-cookie': cookieArray});
+	} else {
+		headers = Object.fromEntries(response.headers);
+	}	
+	return headers;
+}
