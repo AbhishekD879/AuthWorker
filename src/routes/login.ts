@@ -1,5 +1,5 @@
 // Import necessary modules and types
-import { IRequest, error } from 'itty-router';
+import { IRequest, error } from 'itty-router-multiheader/dist';
 import { Env, router } from './../index';
 import { createAccessToken, createRefreshToken } from './../jwtUtils';
 import { CookieBuilder } from '../CookieBuilder';
@@ -52,15 +52,22 @@ export const loginRoute = () => {
 					.build();
 
 				// Construct the Set-Cookie header value
-
-				// Create the response
-				const response = new Response(JSON.stringify({ email, accessToken }), {
-					status: 200,
+				let res = Response.json({ email, accessToken },{
+					status:200,
 					statusText: 'USER_LOGGED_IN',
-				});
-				response.headers.append('Set-Cookie', r_cookie);
-				response.headers.append('Set-Cookie', u_cookie);
-				return response;
+					headers: {
+						'Set-CookiE': r_cookie,
+						'SeT-CookiE': u_cookie
+					},
+				})
+				// Create the response
+				// const response = new Response(JSON.stringify({ email, accessToken }), {
+				// 	status: 200,
+				// 	statusText: 'USER_LOGGED_IN',
+				// });
+				// response.headers.append('Set-Cookie', r_cookie);
+				// response.headers.append('Set-Cookie', u_cookie);
+				return res;
 			} else {
 				return error(401, { message: 'Invalid credentials' });
 			}

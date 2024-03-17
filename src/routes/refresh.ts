@@ -1,4 +1,4 @@
-import { IRequest, error } from 'itty-router';
+import { IRequest, error } from 'itty-router-multiheader/dist';
 import { Env, router } from './../index';
 import { createAccessToken, createRefreshToken, verifyRefreshToken } from '../jwtUtils';
 import { CookieBuilder } from '../CookieBuilder';

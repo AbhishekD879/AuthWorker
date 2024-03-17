@@ -1,4 +1,4 @@
-import { IRequest, error } from 'itty-router';
+import { IRequest, error } from 'itty-router-multiheader/dist';
 import { Env, router } from './../index';
 import { ILoginBody } from '../types';
 import { DELETE_USER } from '../sql_commands';

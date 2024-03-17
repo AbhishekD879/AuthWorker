@@ -1,4 +1,4 @@
-import { IRequest, error } from 'itty-router';
+import { IRequest, error } from 'itty-router-multiheader/dist';
 import { Env, router } from './../index';
 import type { ILoginBody } from './../types';
 import { CookieBuilder } from '../CookieBuilder';
