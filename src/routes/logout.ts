@@ -1,4 +1,4 @@
-import { IRequest, error } from 'itty-router-multiheader/dist';
+import { IRequest, error } from 'bitty-router-multiheader';
 import { router } from './../index';
 import { CookieBuilder } from '../CookieBuilder';
 

@@ -1,11 +1,11 @@
 // Import necessary modules and types
-import { IRequest, error } from 'itty-router-multiheader/dist';
+import { IRequest, error } from 'bitty-router-multiheader';
 import { Env, router } from './../index';
 import { createAccessToken, createRefreshToken } from './../jwtUtils';
 import { CookieBuilder } from '../CookieBuilder';
 import type { ILoginBody } from './../types';
 import { GET_USER } from './../sql_commands';
-import { isEmail, isStrongPassword } from '../userUtils';
+import { hashPassword, isEmail, isStrongPassword } from '../userUtils';
 
 // Define the loginRoute function
 export const loginRoute = () => {
@@ -22,7 +22,9 @@ export const loginRoute = () => {
 				const DB = env.DB;
 				const user = (await DB.prepare(GET_USER).bind(email).all()).results.pop();
 				if (!user) return error(400, { message: 'Invalid email or password' });
-				if (user.password !== password) return error(400, { message: 'Invalid email or password' });
+
+				// Check if User Password Is Correct with salt stored in database
+				if(user.password !== await hashPassword(password,user.salt as string)) return error(400, { message: 'Invalid email or password' });
 
 				// Generate access token
 				const accessToken = await createAccessToken(email, env.JWT_SECRET_KEY, env.ENVIRONMENT);

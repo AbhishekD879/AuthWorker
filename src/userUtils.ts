@@ -1,3 +1,5 @@
+
+
 export function isEmail(email: string): boolean {
 	// Regular expression to match email addresses
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -13,7 +15,6 @@ export function isStrongPassword(password: string): boolean {
 
 
 export function getHeaders(response:Response) {
-
 	let headers;
 	if (response.headers.has('set-cookie')) {
 		const cookieArray = response.headers.get('set-cookie')?.split(', ') || [];
@@ -23,3 +24,20 @@ export function getHeaders(response:Response) {
 	}	
 	return headers;
 }
+
+
+export async function generateSalt(): Promise<string> {
+	const saltArray = new Uint8Array(16);
+	await crypto.getRandomValues(saltArray);
+	return Array.from(saltArray).map(byte => ('0' + (byte & 0xFF).toString(16)).slice(-2)).join('');
+  }
+  
+export async function hashPassword(password: string, salt: string): Promise<string> {
+	const encoder = new TextEncoder();
+	const passwordBuffer = encoder.encode(password);
+	const saltBuffer = encoder.encode(salt);
+	const combinedBuffer = new Uint8Array([...passwordBuffer, ...saltBuffer]);
+	const hashBuffer = await crypto.subtle.digest('SHA-256', combinedBuffer);
+	const hashArray = Array.from(new Uint8Array(hashBuffer));
+	return hashArray.map(byte => ('0' + byte.toString(16)).slice(-2)).join('');
+  }

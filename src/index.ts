@@ -26,7 +26,7 @@ export interface Env {
 	// Example binding to a Queue. Learn more at https://developers.cloudflare.com/queues/javascript-apis/
 	// MY_QUEUE: Queue;
 }
-import { createCors, error, IRequest, json, Router } from 'itty-router-multiheader/dist';
+import { createCors, error, IRequest, json, Router } from 'bitty-router-multiheader';
 import { loginRoute } from './routes/login';
 import { registerRoute } from './routes/register';
 import { refreshRoute } from './routes/refresh';

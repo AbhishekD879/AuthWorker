@@ -1,10 +1,10 @@
-import { IRequest, error } from 'itty-router-multiheader/dist';
+import { IRequest, error } from 'bitty-router-multiheader';
 import { Env, router } from './../index';
 import type { ILoginBody } from './../types';
 import { CookieBuilder } from '../CookieBuilder';
 import { createAccessToken, createRefreshToken } from '../jwtUtils';
 import { CREATE_USER, CREATE_USER_TABLE, GET_USER } from '../sql_commands';
-import { isEmail, isStrongPassword } from '../userUtils';
+import { generateSalt, hashPassword, isEmail, isStrongPassword } from '../userUtils';
 
 export const registerRoute = () => {
 	router.post('/auth/register', async (request: IRequest, env: Env) => {
@@ -33,8 +33,13 @@ export const registerRoute = () => {
 					redirect: request.url.replace('register', 'login'),
 				});
 			}
+			// Genrate salt and hash password with That salt
+			const salt = await generateSalt()
+			const hashedPassword = await hashPassword(password, salt);
+			console.log(`Hashed Password: ${hashedPassword}`);
+
 			// Create User
-			const createdUser = (await DB.prepare(CREATE_USER).bind(email, password, null, null, null, null).all()).results.pop();
+			const createdUser = (await DB.prepare(CREATE_USER).bind(email, hashedPassword, salt).all()).results.pop();
 			if (!createdUser) return error(500, { message: 'Internal server error cannot create user' });
 			console.log(`Created user: ${createdUser}`);
 
