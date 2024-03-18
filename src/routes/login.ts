@@ -24,7 +24,8 @@ export const loginRoute = () => {
 				if (!user) return error(400, { message: 'Invalid email or password' });
 
 				// Check if User Password Is Correct with salt stored in database
-				if(user.password !== await hashPassword(password,user.salt as string)) return error(400, { message: 'Invalid email or password' });
+				if (user.password !== (await hashPassword(password, user.salt as string)))
+					return error(400, { message: 'Invalid email or password' });
 
 				// Generate access token
 				const accessToken = await createAccessToken(email, env.JWT_SECRET_KEY, env.ENVIRONMENT);
@@ -54,22 +55,21 @@ export const loginRoute = () => {
 					.build();
 
 				// Construct the Set-Cookie header value
-				let res = Response.json({ email, accessToken },{
-					status:200,
-					statusText: 'USER_LOGGED_IN',
-					headers: {
-						'Set-CookiE': r_cookie,
-						'SeT-CookiE': u_cookie
+				let response = Response.json(
+					{ email, accessToken },
+					{
+						status: 200,
+						statusText: 'USER_LOGGED_IN',
 					},
-				})
+				);
 				// Create the response
 				// const response = new Response(JSON.stringify({ email, accessToken }), {
 				// 	status: 200,
 				// 	statusText: 'USER_LOGGED_IN',
 				// });
-				// response.headers.append('Set-Cookie', r_cookie);
-				// response.headers.append('Set-Cookie', u_cookie);
-				return res;
+				response.headers.append('Set-Cookie', r_cookie);
+				response.headers.append('Set-Cookie', u_cookie);
+				return response;
 			} else {
 				return error(401, { message: 'Invalid credentials' });
 			}

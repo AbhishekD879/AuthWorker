@@ -34,7 +34,7 @@ export const registerRoute = () => {
 				});
 			}
 			// Genrate salt and hash password with That salt
-			const salt = await generateSalt()
+			const salt = await generateSalt();
 			const hashedPassword = await hashPassword(password, salt);
 			console.log(`Hashed Password: ${hashedPassword}`);
 

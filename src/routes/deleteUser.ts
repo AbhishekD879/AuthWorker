@@ -1,4 +1,4 @@
-import { IRequest, error} from 'bitty-router-multiheader';
+import { IRequest, error } from 'bitty-router-multiheader';
 import { Env, router } from './../index';
 import { ILoginBody } from '../types';
 import { DELETE_USER } from '../sql_commands';
